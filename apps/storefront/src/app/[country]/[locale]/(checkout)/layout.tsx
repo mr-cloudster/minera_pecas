@@ -1,11 +1,11 @@
 "use client";
 
 import { ArrowLeft, ChevronDown, ShoppingBag } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { Logo } from "@/components/layout/Logo";
 import {
   CheckoutProvider,
   CheckoutSummary,
@@ -24,15 +24,12 @@ function CheckoutHeader() {
 
   return (
     <header className="flex items-center justify-between h-16">
-      <Link href={basePath || "/"} className="flex items-center space-x-2">
-        <Image
-          src="/spree.png"
-          alt={storeName}
-          width={90}
-          height={32}
-          fetchPriority="high"
-          loading="eager"
-        />
+      <Link
+        href={basePath || "/"}
+        aria-label={storeName}
+        className="flex items-center rounded-sm"
+      >
+        <Logo />
       </Link>
       <Link
         href={basePath || "/"}

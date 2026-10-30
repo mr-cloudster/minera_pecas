@@ -1,11 +1,11 @@
 import type { Category } from "@spree/sdk";
 import { User } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { CartButton } from "@/components/layout/CartButton";
+import { Logo } from "@/components/layout/Logo";
 import { SearchToggle } from "@/components/layout/SearchToggle";
 import { Button } from "@/components/ui/button";
 import { isWholesaleEnabled } from "@/lib/spree";
@@ -72,17 +72,12 @@ export async function Header({
       basePath={basePath}
       left={mobileNavigation}
       center={
-        <Link href={basePath || "/"} className="flex items-center min-w-0">
-          <Image
-            src="/spree.png"
-            alt={storeName}
-            width={90}
-            height={32}
-            className="max-w-full object-contain"
-            style={{ width: "auto", height: "auto" }}
-            fetchPriority="high"
-            loading="eager"
-          />
+        <Link
+          href={basePath || "/"}
+          aria-label={storeName}
+          className="flex items-center min-w-0 rounded-sm"
+        >
+          <Logo />
         </Link>
       }
       rightStart={

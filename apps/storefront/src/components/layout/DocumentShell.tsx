@@ -1,7 +1,7 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Geist } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import { Suspense } from "react";
 import { localeDirection } from "@/i18n/locales";
 
@@ -16,8 +16,19 @@ const spreeApiOrigin = (() => {
   }
 })();
 
-const geist = Geist({
-  variable: "--font-geist",
+/*
+ * Brand typography (derived, not from a brand guide): Montserrat is the closest
+ * free match to the geometric wordmark in the Minera Peças logo and is used for
+ * headings; Inter keeps body copy, prices and forms readable.
+ */
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   display: "swap",
 });
@@ -42,7 +53,7 @@ export function DocumentShell({ children, locale }: DocumentShellProps) {
       </head>
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body
-        className={`${geist.variable} antialiased min-h-screen flex flex-col`}
+        className={`${inter.variable} ${montserrat.variable} antialiased min-h-screen flex flex-col`}
       >
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
