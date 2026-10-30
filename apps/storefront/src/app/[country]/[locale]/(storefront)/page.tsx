@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { CategoriesSection } from "@/components/home/CategoriesSection";
 import { FeaturedProductsSection } from "@/components/home/FeaturedProductsSection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { SegmentsSection } from "@/components/home/SegmentsSection";
+import { TrustSection } from "@/components/home/TrustSection";
 import { WholesaleSection } from "@/components/home/WholesaleSection";
 import { resolveCurrency } from "@/lib/data/markets";
 import { generateHomeMetadata } from "@/lib/metadata/home";
@@ -28,13 +30,15 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <div>
       <HeroSection basePath={basePath} locale={locale} />
-      <SegmentsSection locale={locale} />
+      <CategoriesSection basePath={basePath} locale={locale} />
       <FeaturedProductsSection
         basePath={basePath}
         locale={locale}
         country={country}
         currency={currency}
       />
+      <SegmentsSection basePath={basePath} locale={locale} />
+      <TrustSection locale={locale} />
       <WholesaleSection basePath={basePath} locale={locale} />
     </div>
   );

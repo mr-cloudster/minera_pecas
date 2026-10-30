@@ -2,6 +2,7 @@ import type { Category } from "@spree/sdk";
 import Link from "next/link";
 import { connection } from "next/server";
 import { cache, Suspense } from "react";
+import { CategoryBar } from "@/components/layout/CategoryBar";
 import { Footer, FooterCategoryLinks } from "@/components/layout/Footer";
 import { Header, HeaderMobileMenu } from "@/components/layout/Header";
 import { getCategories } from "@/lib/data/categories";
@@ -95,6 +96,22 @@ async function StorefrontMobileNavigation({
   );
 }
 
+async function StorefrontCategoryBar({
+  basePath,
+  country,
+  locale,
+}: StorefrontNavigationProps) {
+  const rootCategories = await getRootCategories(country, locale);
+
+  return (
+    <CategoryBar
+      basePath={basePath}
+      locale={locale as Locale}
+      categories={rootCategories}
+    />
+  );
+}
+
 async function StorefrontCategoryNavigation({
   basePath,
   country,
@@ -138,6 +155,19 @@ export default async function StorefrontLayout({
         mobileNavigation={
           <Suspense fallback={<MobileNavigationFallback />}>
             <StorefrontMobileNavigation
+              basePath={basePath}
+              country={country}
+              locale={locale}
+            />
+          </Suspense>
+        }
+        categoryNavigation={
+          <Suspense
+            fallback={
+              <CategoryBar basePath={basePath} locale={locale as Locale} />
+            }
+          >
+            <StorefrontCategoryBar
               basePath={basePath}
               country={country}
               locale={locale}

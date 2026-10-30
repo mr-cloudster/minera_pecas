@@ -1,0 +1,10 @@
+<!-- Minera Peças logo for dark backgrounds (see logo.svg). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 490" width="1600" height="490" role="img" aria-label="Minera Peças – Mineração e Construção">
+  <path fill="#e9a517" d="M0 70H16L328 318 248 426 105 312V490H0Z"/>
+  <path fill="#ffffff" d="M225 215 476 0H495V490H385V198L290 280Z"/>
+  <g font-family="Montserrat, 'Arial Black', Arial, sans-serif">
+    <text x="580" y="250" font-size="200" font-weight="700" letter-spacing="16" fill="#ffffff">MINERA</text>
+    <text x="588" y="372" font-size="92" font-weight="600" letter-spacing="46" fill="#e9a517">PEÇAS</text>
+    <text x="590" y="458" font-size="44" font-weight="500" letter-spacing="10" fill="#a3a3a3">MINERAÇÃO E CONSTRUÇÃO</text>
+  </g>
+</svg>

@@ -72,16 +72,19 @@ export default function CartPage() {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8  py-16">
         <div className="text-center">
-          <ShoppingBag
-            className="w-24 h-24 text-gray-300 mx-auto"
-            strokeWidth={1}
-          />
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">
+          <span className="mx-auto flex size-20 items-center justify-center rounded-md bg-brand-ink text-brand">
+            <ShoppingBag className="size-10" strokeWidth={1.5} />
+          </span>
+          <h1 className="mt-6 text-3xl font-extrabold uppercase tracking-tight text-brand-ink">
             {t("emptyCart")}
           </h1>
-          <p className="mt-2 text-gray-500">{t("emptyCartDescription")}</p>
+          <p className="mt-3 text-neutral-600">{t("emptyCartDescription")}</p>
           <div className="mt-6">
-            <Button size="lg" asChild>
+            <Button
+              size="lg"
+              asChild
+              className="press bg-brand font-bold uppercase tracking-wide text-brand-foreground hover:bg-brand-strong"
+            >
               <Link href={`${basePath}/products`}>
                 {tc("continueShopping")}
               </Link>
@@ -94,14 +97,14 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8  py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
+      <h1 className="mb-8 text-3xl font-extrabold uppercase tracking-tight text-brand-ink md:text-4xl">
         {t("shoppingCart")}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl border border-gray-200 divide-y">
+          <div className="divide-y rounded-md border border-neutral-200 bg-white">
             {cart.items.map((item) => (
               <div key={item.id} className="p-6 flex gap-6">
                 {/* Image */}
@@ -158,8 +161,8 @@ export default function CartPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-24">
-            <h2 className="text-lg font-medium text-gray-900">
+          <div className="sticky top-32 rounded-md border border-neutral-200 border-t-4 border-t-brand bg-white p-6 shadow-[0_18px_40px_-28px_rgb(0_0_0/0.45)]">
+            <h2 className="text-lg font-extrabold uppercase tracking-wide text-brand-ink">
               {tc("orderSummary")}
             </h2>
 
@@ -241,7 +244,11 @@ export default function CartPage() {
               )}
               {!expressProcessing && (
                 <>
-                  <Button size="lg" asChild className="w-full">
+                  <Button
+                    size="lg"
+                    asChild
+                    className="w-full press bg-brand font-bold uppercase tracking-wide text-brand-foreground hover:bg-brand-strong"
+                  >
                     <Link href={`${basePath}/checkout/${cart.id}`}>
                       {t("proceedToCheckout")}
                     </Link>

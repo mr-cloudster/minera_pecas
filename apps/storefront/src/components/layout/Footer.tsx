@@ -1,22 +1,22 @@
 import type { Category } from "@spree/sdk";
-import { Instagram, MessageCircle, Truck } from "lucide-react";
+import { CreditCard, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/brand";
 import { POLICY_LINKS } from "@/lib/constants/policies";
 import { isWholesaleEnabled } from "@/lib/spree";
 import { getStoreDescription, getStoreName } from "@/lib/store";
 import { CurrentYear } from "./CurrentYear";
-import { Logo } from "./Logo";
+import { Logo, LogoMark } from "./Logo";
 
 const storeName = getStoreName();
 const storeDescription = getStoreDescription();
 
-/* neutral-300 on the charcoal band is 11:1; hover to brand yellow is 10:1. */
+/* neutral-300 on the near-black footer is 13:1; hover to brand amber is 8.9:1. */
 const linkClass =
-  "text-sm text-neutral-300 hover:text-brand transition-colors rounded-sm focus-visible:outline-white";
-const headingClass = "text-sm font-bold uppercase tracking-wider text-white";
+  "text-sm text-neutral-300 hover:text-brand transition-colors rounded-sm focus-visible:outline-brand";
+const headingClass =
+  "font-display text-xs font-bold uppercase tracking-[0.2em] text-brand";
 
 interface FooterProps {
   basePath: string;
@@ -45,30 +45,42 @@ export function FooterCategoryLinks({
 export async function Footer({ basePath, locale, categoryLinks }: FooterProps) {
   const t = await getTranslations({ locale, namespace: "footer" });
   const tp = await getTranslations({ locale, namespace: "policies" });
+  const tt = await getTranslations({ locale, namespace: "trust" });
   const wholesaleEnabled = isWholesaleEnabled();
 
+  const assurances = [
+    { icon: ShieldCheck, label: tt("secureTitle") },
+    { icon: Truck, label: tt("shippingTitle") },
+    { icon: CreditCard, label: tt("paymentTitle") },
+    { icon: PackageCheck, label: tt("ordersTitle") },
+  ];
+
   return (
-    <footer className="border-t-4 border-brand bg-brand-ink text-neutral-300">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-6">
+    <footer className="relative isolate overflow-hidden bg-brand-night text-neutral-300">
+      <div aria-hidden="true" className="hazard-stripes h-1.5 w-full" />
+      {/* Oversized monogram watermark */}
+      <LogoMark className="pointer-events-none absolute -bottom-24 -right-16 -z-10 h-[420px] w-auto text-white opacity-[0.035]" />
+
+      <div className="container mx-auto px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12">
           {/* Brand */}
-          <div className="sm:col-span-2">
+          <div className="sm:col-span-2 lg:col-span-4">
             <Link
               href={basePath || "/"}
               aria-label={storeName}
-              className="inline-flex rounded-sm focus-visible:outline-white"
+              className="press inline-flex rounded-sm focus-visible:outline-brand"
             >
               <Logo tone="dark" showTagline tagline={t("tagline")} />
             </Link>
-            <p className="mt-4 max-w-sm text-sm text-neutral-300">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-400">
               {t("description") || storeDescription}
             </p>
           </div>
 
           {/* Shop */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className={headingClass}>{t("shop")}</h3>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               <li>
                 <Link href={`${basePath}/products`} className={linkClass}>
                   {t("allProducts")}
@@ -79,9 +91,9 @@ export async function Footer({ basePath, locale, categoryLinks }: FooterProps) {
           </div>
 
           {/* Account */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className={headingClass}>{t("account")}</h3>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               <li>
                 <Link href={`${basePath}/account`} className={linkClass}>
                   {t("myAccount")}
@@ -108,9 +120,9 @@ export async function Footer({ basePath, locale, categoryLinks }: FooterProps) {
           </div>
 
           {/* Policies */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className={headingClass}>{t("policies")}</h3>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               {POLICY_LINKS.map((policy) => (
                 <li key={policy.slug}>
                   <Link
@@ -124,44 +136,29 @@ export async function Footer({ basePath, locale, categoryLinks }: FooterProps) {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className={headingClass}>{t("contact")}</h3>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${linkClass} inline-flex items-center gap-2`}
+          {/* Assurances (no links: reasons to buy here) */}
+          <div className="lg:col-span-2">
+            <h3 className={headingClass}>{t("buyWithConfidence")}</h3>
+            <ul className="mt-5 space-y-3">
+              {assurances.map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  className="flex items-center gap-2.5 text-sm text-neutral-300"
                 >
-                  <MessageCircle className="size-4 shrink-0" aria-hidden />
-                  {t("whatsapp")}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={INSTAGRAM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${t("instagram")}: ${INSTAGRAM_HANDLE}`}
-                  className={`${linkClass} inline-flex items-center gap-2`}
-                >
-                  <Instagram className="size-4 shrink-0" aria-hidden />
-                  {INSTAGRAM_HANDLE}
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-neutral-300">
-                <Truck className="size-4 shrink-0 text-brand" aria-hidden />
-                {t("shipsNationwide")}
-              </li>
+                  <Icon className="size-4 shrink-0 text-brand" aria-hidden />
+                  {label}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-white/10 text-xs text-neutral-400 text-center">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-xs text-neutral-400 sm:flex-row">
           <p>
             &copy; <CurrentYear /> {storeName}. {t("rightsReserved")}
+          </p>
+          <p className="font-display font-semibold uppercase tracking-[0.25em] text-neutral-400">
+            {t("tagline")}
           </p>
         </div>
       </div>

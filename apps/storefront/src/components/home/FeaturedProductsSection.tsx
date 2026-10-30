@@ -1,9 +1,9 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FeaturedProducts } from "@/components/products/FeaturedProducts";
 import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
-import { Button } from "@/components/ui/button";
 
 function CarouselSkeleton() {
   return (
@@ -34,23 +34,32 @@ export async function FeaturedProductsSection({
   });
 
   return (
-    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 featured-products">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {t("featuredProducts")}
-        </h2>
-        <Button variant="link" asChild>
-          <Link href={`${basePath}/products`}>{t("viewAll")} &rarr;</Link>
-        </Button>
+    <section className="featured-products border-t border-neutral-200 bg-neutral-50">
+      <div className="container mx-auto px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+        <div className="mb-10 flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-extrabold uppercase tracking-tight text-brand-ink md:text-4xl">
+              {t("featuredProducts")}
+            </h2>
+            <div className="mt-4 h-1 w-14 bg-brand" aria-hidden="true" />
+          </div>
+          <Link
+            href={`${basePath}/products`}
+            className="press inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm text-sm font-bold uppercase tracking-wider text-brand-ink underline decoration-brand decoration-2 underline-offset-8 hover:decoration-brand-ink"
+          >
+            {t("viewAll")}
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </div>
+        <Suspense fallback={<CarouselSkeleton />}>
+          <FeaturedProducts
+            basePath={basePath}
+            locale={locale}
+            country={country}
+            currency={currency}
+          />
+        </Suspense>
       </div>
-      <Suspense fallback={<CarouselSkeleton />}>
-        <FeaturedProducts
-          basePath={basePath}
-          locale={locale}
-          country={country}
-          currency={currency}
-        />
-      </Suspense>
     </section>
   );
 }

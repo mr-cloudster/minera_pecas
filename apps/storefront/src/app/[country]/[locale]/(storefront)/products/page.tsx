@@ -42,35 +42,47 @@ export default async function ProductsPage({
   const listName = query ? "Search Results" : "All Products";
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        {query ? (
-          <h1 className="text-3xl font-bold text-gray-900">
-            {t("searchResultsFor", { query })}
-          </h1>
-        ) : (
-          <>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {t("allProducts")}
+    <div>
+      <div className="relative isolate overflow-hidden border-b-4 border-brand bg-brand-ink text-white">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 blueprint-grid [mask-image:linear-gradient(to_right,transparent,black)]"
+        />
+        <div className="container mx-auto px-4 py-10 sm:px-6 md:py-14 lg:px-8">
+          {query ? (
+            <h1 className="text-3xl font-extrabold uppercase tracking-tight md:text-5xl">
+              {t("searchResultsFor", { query })}
             </h1>
-            <p className="mt-2 text-gray-500">{t("browseCollection")}</p>
-          </>
-        )}
+          ) : (
+            <>
+              <h1 className="text-3xl font-extrabold uppercase tracking-tight md:text-5xl">
+                {t("allProducts")}
+              </h1>
+              <p className="mt-3 max-w-xl text-neutral-300">
+                {t("browseCollection")}
+              </p>
+            </>
+          )}
+        </div>
       </div>
 
-      <ProductListing
-        state={listingState}
-        basePath={basePath}
-        currency={currency}
-        locale={locale as Locale}
-        listId={listId}
-        listName={listName}
-        fetchProducts={getProducts}
-        fetchFilters={getProductFilters}
-        emptyMessage={
-          query ? t("noMatchingProducts", { query }) : t("tryAdjustingFilters")
-        }
-      />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ProductListing
+          state={listingState}
+          basePath={basePath}
+          currency={currency}
+          locale={locale as Locale}
+          listId={listId}
+          listName={listName}
+          fetchProducts={getProducts}
+          fetchFilters={getProductFilters}
+          emptyMessage={
+            query
+              ? t("noMatchingProducts", { query })
+              : t("tryAdjustingFilters")
+          }
+        />
+      </div>
     </div>
   );
 }

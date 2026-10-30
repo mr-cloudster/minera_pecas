@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { useCallback, useRef, useState } from "react";
+import { headerIconButtonClass } from "@/components/layout/header-styles";
 import { Button } from "@/components/ui/button";
 
 const SearchBar = dynamic(
@@ -13,9 +14,7 @@ const SearchBar = dynamic(
       default: mod.SearchBar,
     })),
   {
-    loading: () => (
-      <div className="h-10 w-full bg-gray-100 rounded-md animate-pulse" />
-    ),
+    loading: () => <div className="h-11 w-full rounded-md bg-white/10" />,
   },
 );
 
@@ -23,22 +22,31 @@ interface SearchToggleProps {
   basePath: string;
   /** Left slot (e.g. mobile menu) */
   left: ReactNode;
-  /** Center slot (e.g. logo) */
+  /** Logo slot */
   center: ReactNode;
   /** Rendered before the search button in the right section */
   rightStart: ReactNode;
   /** Rendered after the search button in the right section */
   rightEnd: ReactNode;
+  /** Rendered under the main bar, inside the sticky header (category nav). */
+  below?: ReactNode;
 }
 
+/**
+ * Charcoal main bar. From md up the search field is always visible in the bar
+ * (search is the main way to find a part by code); on phones it opens as an
+ * overlay from the search icon.
+ */
 export function SearchToggle({
   basePath,
   left,
   center,
   rightStart,
   rightEnd,
+  below,
 }: SearchToggleProps) {
   const t = useTranslations("header");
+  const tp = useTranslations("products");
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
 
@@ -48,87 +56,103 @@ export function SearchToggle({
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 h-16 relative">
-      {/* Normal header content */}
-      <div
-        className={`absolute inset-0 transition-all duration-300 ease-in-out ${
-          searchOpen
-            ? "translate-y-4 opacity-0 pointer-events-none"
-            : "translate-y-0 opacity-100"
-        }`}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="flex items-center h-full w-full">
-            {/* Left section */}
-            <div className="flex items-center flex-1">{left}</div>
+    <header className="sticky top-0 z-50 shadow-[0_8px_24px_-12px_rgb(0_0_0/0.45)]">
+      <div className="relative h-16 bg-brand-ink text-white">
+        {/* Normal header content */}
+        <div
+          className={`absolute inset-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] ${
+            searchOpen
+              ? "translate-y-2 opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100"
+          }`}
+        >
+          <div className="container mx-auto h-full px-4 sm:px-6 lg:px-8">
+            <div className="flex h-full w-full items-center gap-2 md:gap-4">
+              <div className="flex items-center">{left}</div>
 
-            {/* Center section */}
-            <div className="flex justify-center min-w-0">{center}</div>
+              <div className="flex min-w-0 flex-1 items-center md:flex-none">
+                {center}
+              </div>
 
-            {/* Right section */}
-            <div className="flex items-center flex-1 justify-end space-x-2">
-              {rightStart}
+              {/* Always-on search from md up */}
+              <div className="hidden min-w-0 flex-1 md:block md:max-w-xl lg:max-w-2xl lg:mx-auto">
+                <SearchBar
+                  basePath={basePath}
+                  tone="dark"
+                  placeholder={tp("searchPlaceholder")}
+                />
+              </div>
 
-              {/* Search toggle */}
-              <Button
-                ref={searchTriggerRef}
-                variant="ghost"
-                size="icon-lg"
-                onClick={() => setSearchOpen(true)}
-                aria-label={t("openSearch")}
-                aria-expanded={searchOpen}
-                aria-controls="search-overlay"
-              >
-                <Search className="size-5" />
-              </Button>
+              <div className="flex items-center justify-end gap-1">
+                {rightStart}
 
-              {rightEnd}
+                {/* Search toggle (phones) */}
+                <Button
+                  ref={searchTriggerRef}
+                  variant="ghost"
+                  size="icon-lg"
+                  onClick={() => setSearchOpen(true)}
+                  aria-label={t("openSearch")}
+                  aria-expanded={searchOpen}
+                  aria-controls="search-overlay"
+                  className={`md:hidden ${headerIconButtonClass}`}
+                >
+                  <Search className="size-5" />
+                </Button>
+
+                {rightEnd}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Click-outside overlay */}
-      {searchOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={closeSearch}
-          role="presentation"
-        />
-      )}
-
-      {/* Search bar overlay */}
-      <div
-        id="search-overlay"
-        inert={!searchOpen}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") closeSearch();
-        }}
-        className={`absolute inset-0 z-50 transition-all duration-300 ease-in-out ${
-          searchOpen
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-4 opacity-0 pointer-events-none"
-        }`}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center gap-3">
-          <div className="flex-1">
-            <SearchBar
-              key={String(searchOpen)}
-              basePath={basePath}
-              autoFocus={searchOpen}
-              onNavigate={closeSearch}
-            />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon-lg"
+        {/* Click-outside overlay */}
+        {searchOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/40 md:hidden"
             onClick={closeSearch}
-            aria-label={t("closeSearch")}
-          >
-            <X className="size-5" />
-          </Button>
+            role="presentation"
+          />
+        )}
+
+        {/* Search bar overlay (phones) */}
+        <div
+          id="search-overlay"
+          inert={!searchOpen}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") closeSearch();
+          }}
+          className={`absolute inset-0 z-50 bg-brand-ink transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] md:hidden ${
+            searchOpen
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-2 opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="container mx-auto flex h-full items-center gap-2 px-4 sm:px-6">
+            <div className="flex-1">
+              {searchOpen && (
+                <SearchBar
+                  basePath={basePath}
+                  autoFocus
+                  tone="dark"
+                  placeholder={tp("searchPlaceholder")}
+                  onNavigate={closeSearch}
+                />
+              )}
+            </div>
+            <Button
+              variant="ghost"
+              size="icon-lg"
+              onClick={closeSearch}
+              aria-label={t("closeSearch")}
+              className={headerIconButtonClass}
+            >
+              <X className="size-5" />
+            </Button>
+          </div>
         </div>
       </div>
+      {below}
     </header>
   );
 }

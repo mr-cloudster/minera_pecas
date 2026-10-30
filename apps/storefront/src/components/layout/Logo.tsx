@@ -1,39 +1,47 @@
 import { cn } from "@/lib/utils";
 
 /*
- * PLACEHOLDER LOGO — replace with the official vector artwork.
+ * Minera Peças logo, rebuilt as vector.
  *
- * The "M" monogram below was hand-traced from the 150×150 px profile picture of
- * the official Instagram account (@minera_pecas), and the wordmark is rendered
- * as live text in Montserrat, the closest free match to the logo lettering.
- * Colors (#facf34 yellow, #222223 charcoal) were sampled from that JPEG.
- * It is a faithful approximation, not the customer's master file: once the
- * original SVG/AI/PDF is available, swap the paths in <LogoMark> and the files
- * public/logo.svg, public/logo-mark.svg and src/app/icon.svg.
+ * No high-resolution logo file is publicly available (the Instagram profile
+ * picture is 150×150 px and the posts are served at 640×640 px), so the "M"
+ * monogram was redrawn as clean geometry, matched against the largest logo
+ * rendering found (post DadaerUvZsM, 640 px) and the profile picture. The
+ * wordmark is live text in Montserrat, the closest free match to the logo
+ * lettering. Replace the paths below with the customer's master artwork when
+ * it is supplied; public/logo*.svg and src/app/icon.svg share these paths.
  */
+
+/** Monogram geometry, viewBox 0 0 495 490. */
+export const MONOGRAM_LEFT = "M0 70H16L328 318 248 426 105 312V490H0Z";
+export const MONOGRAM_RIGHT = "M225 215 476 0H495V490H385V198L290 280Z";
 
 interface LogoMarkProps {
   className?: string;
 }
 
-/** The yellow-and-charcoal "M" monogram. Decorative; label the parent link. */
+/**
+ * The yellow "M" monogram. The right stroke uses currentColor so it reads as
+ * charcoal on light surfaces and white on dark ones. Decorative: label the
+ * parent link instead.
+ */
 export function LogoMark({ className }: LogoMarkProps) {
   return (
     <svg
-      viewBox="0 0 77 97"
+      viewBox="0 0 495 490"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
       className={className}
     >
-      <path fill="#facf34" d="M0 22.5 51.25 61 40 78.75 16.25 61V97H0Z" />
-      <path fill="currentColor" d="M30 40 75 0H77V97H62V37.5L45 52.5Z" />
+      <path className="fill-brand" d={MONOGRAM_LEFT} />
+      <path fill="currentColor" d={MONOGRAM_RIGHT} />
     </svg>
   );
 }
 
 interface LogoProps {
-  /** `light` for white/pale backgrounds, `dark` for the charcoal brand band. */
+  /** `light` for white/pale backgrounds, `dark` for charcoal surfaces. */
   tone?: "light" | "dark";
   /** Show the "Mineração e Construção" descriptor line. */
   showTagline?: boolean;
@@ -62,19 +70,17 @@ export function Logo({
         aria-hidden="true"
         className="flex flex-col font-display uppercase leading-none"
       >
-        <span
-          className={cn("text-[1.35rem] font-extrabold tracking-[0.06em]", ink)}
-        >
+        <span className={cn("text-[1.4rem] font-bold tracking-[0.08em]", ink)}>
           Minera
         </span>
-        <span className="mt-0.5 text-[0.8rem] font-semibold tracking-[0.42em] text-brand">
+        <span className="mt-0.5 text-[0.78rem] font-semibold tracking-[0.5em] text-brand">
           Peças
         </span>
         {showTagline && tagline && (
           <span
             className={cn(
-              "mt-1 text-[0.55rem] font-medium tracking-[0.2em]",
-              tone === "dark" ? "text-neutral-300" : "text-neutral-600",
+              "mt-1.5 text-[0.55rem] font-medium tracking-[0.22em]",
+              tone === "dark" ? "text-neutral-400" : "text-neutral-600",
             )}
           >
             {tagline}

@@ -287,7 +287,11 @@ export function CartDrawer() {
 
             {!expressProcessing && (
               <div className="space-y-2">
-                <Button size="lg" className="w-full" asChild>
+                <Button
+                  size="lg"
+                  className="w-full press bg-brand font-bold uppercase tracking-wide text-brand-foreground hover:bg-brand-strong"
+                  asChild
+                >
                   <Link
                     href={`${basePath}/checkout/${cart?.id}`}
                     onClick={closeCart}

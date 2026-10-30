@@ -48,8 +48,10 @@ export function ProductCarousel({
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">{t("noProductsFound")}</p>
+      <div className="rounded-md border-2 border-dashed border-neutral-300 bg-white px-6 py-12 text-center">
+        <p className="font-display text-base font-bold uppercase tracking-wide text-neutral-600">
+          {t("noProductsFound")}
+        </p>
       </div>
     );
   }

@@ -182,15 +182,14 @@ async function ProductListingInner({
           />
         </>
       ) : (
-        <div className="text-center py-12">
-          <Search
-            className="mx-auto h-12 w-12 text-gray-400"
-            strokeWidth={1.5}
-          />
-          <h3 className="mt-4 text-lg font-medium text-gray-900">
+        <div className="rounded-md border-2 border-dashed border-neutral-300 bg-neutral-50 px-6 py-14 text-center">
+          <span className="mx-auto flex size-14 items-center justify-center rounded-md bg-brand-ink text-brand">
+            <Search className="size-7" strokeWidth={1.75} />
+          </span>
+          <h3 className="mt-5 font-display text-lg font-extrabold uppercase tracking-wide text-brand-ink">
             {t("noProductsFound")}
           </h3>
-          <p className="mt-2 text-gray-500">
+          <p className="mt-2 text-neutral-600">
             {emptyMessage ?? t("tryAdjustingFilters")}
           </p>
         </div>

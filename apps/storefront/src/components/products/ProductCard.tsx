@@ -54,43 +54,43 @@ export const ProductCard = memo(function ProductCard({
   };
 
   return (
-    <div className="group relative">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-md border border-neutral-200 bg-white transition-[border-color,box-shadow] duration-200 hover:border-brand-ink hover:shadow-[0_18px_40px_-22px_rgb(0_0_0/0.4)] has-[a:focus-visible]:border-brand-ink has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-brand-ink has-[a:focus-visible]:ring-offset-2">
       {/* Image */}
-      <div className="relative aspect-square bg-gray-100 rounded-md overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-neutral-100">
         <ProductImage
           src={imageUrl}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 300px"
           iconClassName="w-16 h-16"
           fetchPriority={fetchPriority}
         />
         {onSale && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded">
+          <span className="absolute left-0 top-3 bg-brand px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider text-brand-foreground">
             {t("sale")}
           </span>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <h3 className="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="font-sans text-sm font-semibold leading-snug text-brand-ink line-clamp-2">
           {/* Stretched link: the ::after overlay keeps the whole card clickable
               without wrapping the content in an <a> — HiddenPricePrompt renders
               its own link, and anchors can't nest. */}
           <Link
             href={`${basePath}/products/${product.slug}${categoryId ? `?category_id=${categoryId}` : ""}`}
-            className="after:absolute after:inset-0"
+            className="after:absolute after:inset-0 focus-visible:outline-none"
             onClick={handleClick}
           >
             {product.name}
           </Link>
         </h3>
 
-        <div className="mt-2 flex items-center gap-2">
+        <div className="mt-auto flex items-baseline gap-2 pt-3">
           {displayPrice ? (
-            <span className="text-lg font-semibold text-gray-900">
+            <span className="font-display text-xl font-extrabold tracking-tight text-brand-ink">
               {displayPrice}
             </span>
           ) : (
@@ -106,9 +106,15 @@ export const ProductCard = memo(function ProductCard({
         </div>
 
         {!product.purchasable && (
-          <span className="mt-2 text-sm text-gray-500">{t("outOfStock")}</span>
+          <span className="mt-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            {t("outOfStock")}
+          </span>
         )}
       </div>
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-brand transition-transform duration-300 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
+      />
     </div>
   );
 });

@@ -1,13 +1,10 @@
-<!-- PLACEHOLDER: recreation of the Minera Peças logo from the @minera_pecas Instagram profile picture.
-     Monogram hand-traced; wordmark set as live text in Montserrat (closest free match). Replace with the official vector file. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 110" width="400" height="110" role="img" aria-label="Minera Peças – Mineração e Construção">
-  <g transform="translate(4 6)">
-    <path fill="#facf34" d="M0 22.5 51.25 61 40 78.75 16.25 61V97H0Z"/>
-    <path fill="#222223" d="M30 40 75 0H77V97H62V37.5L45 52.5Z"/>
-  </g>
+<!-- Minera Peças logo. Monogram rebuilt as vector from the brand's Instagram artwork; wordmark set in Montserrat (closest free match). Replace with the master file when available. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 490" width="1600" height="490" role="img" aria-label="Minera Peças – Mineração e Construção">
+  <path fill="#e9a517" d="M0 70H16L328 318 248 426 105 312V490H0Z"/>
+  <path fill="#151515" d="M225 215 476 0H495V490H385V198L290 280Z"/>
   <g font-family="Montserrat, 'Arial Black', Arial, sans-serif">
-    <text x="100" y="56" font-size="46" font-weight="800" letter-spacing="3" fill="#222223">MINERA</text>
-    <text x="102" y="82" font-size="20" font-weight="600" letter-spacing="9" fill="#facf34">PEÇAS</text>
-    <text x="102" y="100" font-size="10" font-weight="500" letter-spacing="2.5" fill="#555">MINERAÇÃO E CONSTRUÇÃO</text>
+    <text x="580" y="250" font-size="200" font-weight="700" letter-spacing="16" fill="#151515">MINERA</text>
+    <text x="588" y="372" font-size="92" font-weight="600" letter-spacing="46" fill="#e9a517">PEÇAS</text>
+    <text x="590" y="458" font-size="44" font-weight="500" letter-spacing="10" fill="#555555">MINERAÇÃO E CONSTRUÇÃO</text>
   </g>
 </svg>

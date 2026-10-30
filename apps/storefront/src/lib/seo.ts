@@ -3,7 +3,7 @@ import { ensureProtocol, getStoreName, getStoreUrl } from "@/lib/store";
 
 /**
  * Default social image path (stored in public/).
- * Minera Peças placeholder OG image (1200x630); replace with a photo-based one.
+ * Minera Peças Open Graph image (1200x630, rendered from vector artwork).
  */
 export const SOCIAL_IMAGE_PATH = "/social-image.webp";
 

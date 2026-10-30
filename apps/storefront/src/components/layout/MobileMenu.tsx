@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { headerIconButtonClass } from "@/components/layout/header-styles";
 import { RegionPreferences } from "@/components/layout/RegionPreferences";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +16,7 @@ import {
   SheetFooter,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { PART_TYPES, partSearchHref } from "@/lib/brand";
 
 type PanelType = { kind: "main" } | { kind: "category"; category: Category };
 
@@ -87,11 +89,11 @@ export function MobileMenu({
 
   // Shared link style
   const linkClass =
-    "text-left text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3 py-2.5 text-base transition-colors";
+    "text-left text-neutral-200 hover:text-white hover:bg-white/5 rounded-md px-3 py-2.5 text-base font-medium transition-colors focus-visible:outline-brand focus-visible:outline-offset-[-2px]";
 
   // Shared button style for items with children (chevron)
   const categoryButtonClass =
-    "flex items-center justify-between w-full text-left text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3 py-2.5 text-base transition-colors";
+    "flex items-center justify-between w-full text-left text-neutral-200 hover:text-white hover:bg-white/5 rounded-md px-3 py-2.5 text-base font-medium transition-colors focus-visible:outline-brand focus-visible:outline-offset-[-2px]";
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
@@ -104,7 +106,7 @@ export function MobileMenu({
           setOpen(!open);
         }}
         aria-label={open ? t("closeMenu") : t("openMenu")}
-        className="relative z-[60] cursor-pointer"
+        className={`relative z-[60] cursor-pointer ${headerIconButtonClass}`}
       >
         <div className="relative w-5 h-5">
           {/* Top line: phase 1 translates to center, phase 2 rotates 45° */}
@@ -147,16 +149,16 @@ export function MobileMenu({
 
       <SheetContent
         side="left"
-        className="flex flex-col !gap-0 !rounded-none overflow-hidden max-md:!top-16 max-md:!h-[calc(100%-4rem)] max-md:!w-full max-md:!max-w-none max-md:!border-r-0"
+        className="flex flex-col !gap-0 !rounded-none overflow-hidden bg-brand-ink text-white border-white/10 max-md:!top-16 max-md:!h-[calc(100%-4rem)] max-md:!w-full max-md:!max-w-none max-md:!border-r-0"
         showCloseButton={false}
         overlayClassName="max-md:!top-16 max-md:!bg-transparent"
       >
         <SheetTitle className="sr-only">{t("menu")}</SheetTitle>
         {/* Menu header — changes based on active panel */}
-        <div className="hidden md:flex items-center justify-between px-4 h-16 border-b border-gray-200 relative overflow-hidden">
+        <div className="hidden md:flex items-center justify-between px-4 h-16 border-b border-white/10 relative overflow-hidden">
           {/* "Menu" title — visible when on main panel */}
           <span
-            className={`text-base font-semibold transition-all duration-300 ease-in-out absolute left-4 ${
+            className={`font-display text-base font-bold uppercase tracking-wider transition-all duration-300 ease-in-out absolute left-4 ${
               currentPanel.kind === "main"
                 ? "translate-x-0 opacity-100"
                 : "-translate-x-8 opacity-0 pointer-events-none"
@@ -168,7 +170,7 @@ export function MobileMenu({
           <button
             type="button"
             onClick={popPanel}
-            className={`flex items-center gap-2 text-gray-700 hover:text-gray-900 text-base font-semibold cursor-pointer transition-all duration-300 ease-in-out absolute left-4 ${
+            className={`flex items-center gap-2 text-neutral-200 hover:text-white text-base font-semibold cursor-pointer transition-all duration-300 ease-in-out absolute left-4 ${
               currentPanel.kind !== "main"
                 ? "translate-x-0 opacity-100"
                 : "translate-x-8 opacity-0 pointer-events-none"
@@ -185,7 +187,7 @@ export function MobileMenu({
             variant="ghost"
             size="icon-sm"
             onClick={() => setOpen(false)}
-            className="cursor-pointer ml-auto"
+            className={`cursor-pointer ml-auto ${headerIconButtonClass}`}
           >
             <X className="size-4" />
           </Button>
@@ -195,7 +197,7 @@ export function MobileMenu({
         <div className="relative flex-1 overflow-hidden">
           {/* Main menu panel */}
           <div
-            className={`absolute inset-0 flex flex-col bg-white transition-transform duration-300 ease-in-out ${
+            className={`absolute inset-0 flex flex-col bg-brand-ink transition-transform duration-300 ease-in-out ${
               animatedIndex === 0 && currentPanel.kind === "main"
                 ? "translate-x-0"
                 : "-translate-x-full"
@@ -225,7 +227,7 @@ export function MobileMenu({
                     className={categoryButtonClass}
                   >
                     <span>{category.name}</span>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                    <ChevronRight className="w-4 h-4 text-brand" />
                   </button>
                 ) : (
                   <Link
@@ -238,15 +240,28 @@ export function MobileMenu({
                   </Link>
                 ),
               )}
-              <Link
-                href={`${basePath}/#contact`}
-                onClick={() => setOpen(false)}
-                className={linkClass}
-              >
-                {t("contact")}
-              </Link>
+              {/* Part families until the catalog has categories */}
+              {rootCategories.length === 0 && (
+                <div className="mt-2 border-t border-white/10 pt-3">
+                  <p className="px-3 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-brand">
+                    {t("shopByPart")}
+                  </p>
+                  <div className="grid grid-cols-2 gap-1">
+                    {PART_TYPES.map((part) => (
+                      <Link
+                        key={part.key}
+                        href={partSearchHref(basePath, part.query)}
+                        onClick={() => setOpen(false)}
+                        className={linkClass}
+                      >
+                        {t(`partTypes.${part.key}`)}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
               {/* Secondary links — kept out of the category list above. */}
-              <div className="mt-2 pt-2 border-t border-gray-200">
+              <div className="mt-2 pt-2 border-t border-white/10">
                 {wholesaleEnabled && (
                   <Link
                     href={`${basePath}/wholesale`}
@@ -264,11 +279,19 @@ export function MobileMenu({
                     {t("myAccount")}
                   </Link>
                 </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href={`${basePath}/account/orders`}
+                    className={`${linkClass} block`}
+                  >
+                    {t("myOrders")}
+                  </Link>
+                </SheetClose>
               </div>
             </nav>
 
             {/* Footer: centered Region and language control (mobile only) */}
-            <SheetFooter className="lg:hidden items-center border-t border-gray-200 pt-4 gap-2">
+            <SheetFooter className="lg:hidden items-center border-t border-white/10 pt-4 gap-2 [&_button]:text-white [&_button:hover]:text-brand">
               <RegionPreferences variant="menu" />
             </SheetFooter>
           </div>
@@ -285,14 +308,14 @@ export function MobileMenu({
             return (
               <div
                 key={`cat-${panel.category.id}-${index}`}
-                className={`absolute inset-0 flex flex-col bg-white transition-transform duration-300 ease-in-out ${translateClass}`}
+                className={`absolute inset-0 flex flex-col bg-brand-ink transition-transform duration-300 ease-in-out ${translateClass}`}
               >
                 {/* Back button (mobile only — desktop uses the global header) */}
-                <div className="md:hidden px-4 py-2 border-b border-gray-200">
+                <div className="md:hidden px-4 py-2 border-b border-white/10">
                   <button
                     type="button"
                     onClick={popPanel}
-                    className="flex items-center gap-2 text-gray-700 hover:text-gray-900 py-2 text-base font-medium"
+                    className="flex items-center gap-2 text-neutral-200 hover:text-white py-2 text-base font-medium"
                   >
                     <ArrowLeft className="w-5 h-5" />
                     <span>{panel.category.name}</span>
@@ -312,7 +335,7 @@ export function MobileMenu({
                         className={categoryButtonClass}
                       >
                         <span>{child.name}</span>
-                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                        <ChevronRight className="w-4 h-4 text-brand" />
                       </button>
                     ) : (
                       <Link
@@ -328,11 +351,11 @@ export function MobileMenu({
                 </nav>
 
                 {/* "View all" at the bottom */}
-                <div className="border-t border-gray-200 px-4 py-3">
+                <div className="border-t border-white/10 px-4 py-3">
                   <Link
                     href={`${basePath}/c/${panel.category.permalink}`}
                     onClick={() => handleOpenChange(false)}
-                    className="block w-full text-center text-sm text-gray-500 hover:text-gray-900 py-2 transition-colors"
+                    className="block w-full text-center text-sm font-semibold text-brand hover:text-brand-strong py-2 transition-colors"
                   >
                     {t("viewAllCategory", { category: panel.category.name })}
                   </Link>

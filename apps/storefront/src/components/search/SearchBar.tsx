@@ -4,7 +4,7 @@ import type { Product } from "@spree/sdk";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import {
   InputGroup,
   InputGroupAddon,
@@ -15,14 +15,31 @@ import { useStore } from "@/contexts/StoreContext";
 import { useFormatMoney } from "@/hooks/useFormatMoney";
 import { trackQuickSearch, trackSelectItem } from "@/lib/analytics/gtm";
 import { getProducts } from "@/lib/data/products";
+import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
   basePath: string;
   autoFocus?: boolean;
   onNavigate?: () => void;
+  /** Overrides the default "Search" placeholder (also used as the label). */
+  placeholder?: string;
+  /**
+   * `light` (default) for white surfaces, `dark` for the charcoal header,
+   * `hero` for the large homepage search on a dark ground.
+   */
+  tone?: "light" | "dark" | "hero";
 }
 
-export function SearchBar({ basePath, autoFocus, onNavigate }: SearchBarProps) {
+export function SearchBar({
+  basePath,
+  autoFocus,
+  onNavigate,
+  placeholder,
+  tone = "light",
+}: SearchBarProps) {
+  const idBase = useId();
+  const listboxId = `${idBase}-suggestions`;
+  const optionId = (index: number) => `${idBase}-option-${index}`;
   const router = useRouter();
   const { currency } = useStore();
   const t = useTranslations("products");
@@ -160,7 +177,13 @@ export function SearchBar({ basePath, autoFocus, onNavigate }: SearchBarProps) {
   return (
     <div className="relative">
       <form onSubmit={handleSubmit}>
-        <InputGroup>
+        <InputGroup
+          className={cn(
+            tone !== "light" &&
+              "border-transparent bg-white text-neutral-900 shadow-sm has-[[data-slot=input-group-control]:focus]:border-transparent has-[[data-slot=input-group-control]:focus]:[outline:2px_solid_var(--brand)] has-[[data-slot=input-group-control]:focus]:outline-offset-2 dark:bg-white",
+            tone === "hero" && "h-14 rounded-md [&_input]:text-base",
+          )}
+        >
           <InputGroupInput
             ref={inputRef}
             type="search"
@@ -169,19 +192,19 @@ export function SearchBar({ basePath, autoFocus, onNavigate }: SearchBarProps) {
             onFocus={() => setIsOpen(true)}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            placeholder={t("search")}
+            placeholder={placeholder ?? t("search")}
             autoFocus={autoFocus}
             role="combobox"
             aria-expanded={showSuggestions}
-            aria-controls="search-suggestions"
+            aria-controls={listboxId}
             aria-activedescendant={
-              selectedIndex >= 0 ? `search-option-${selectedIndex}` : undefined
+              selectedIndex >= 0 ? optionId(selectedIndex) : undefined
             }
             aria-autocomplete="list"
-            aria-label={t("search")}
+            aria-label={placeholder ?? t("search")}
           />
           <InputGroupAddon>
-            <Search />
+            <Search className={tone === "hero" ? "size-5" : undefined} />
           </InputGroupAddon>
         </InputGroup>
       </form>
@@ -189,20 +212,20 @@ export function SearchBar({ basePath, autoFocus, onNavigate }: SearchBarProps) {
       {/* Suggestions dropdown */}
       {showSuggestions && (
         <div
-          className="fixed left-0 right-0 mt-1 bg-white border-b border-gray-200 z-50"
+          className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-md border border-neutral-200 bg-white text-neutral-900 shadow-2xl"
           onMouseDown={handleSuggestionsMouseDown}
         >
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div>
             {loading ? (
               <div className="p-4 text-center text-gray-500 text-sm">
                 {t("searching")}
               </div>
             ) : suggestions.length > 0 ? (
-              <ul id="search-suggestions" role="listbox">
+              <ul id={listboxId} role="listbox">
                 {suggestions.map((product, index) => (
                   <li
                     key={product.id}
-                    id={`search-option-${index}`}
+                    id={optionId(index)}
                     role="option"
                     aria-selected={index === selectedIndex}
                     tabIndex={-1}

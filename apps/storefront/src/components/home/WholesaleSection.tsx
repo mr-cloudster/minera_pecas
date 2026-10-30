@@ -41,15 +41,15 @@ export async function WholesaleSection({
   ];
 
   return (
-    <section className="bg-slate-900 text-slate-100">
+    <section className="border-t border-white/10 bg-brand-steel text-neutral-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
           {/* Pitch + CTAs */}
           <div>
-            <span className="inline-flex items-center rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-300">
+            <span className="inline-flex items-center rounded-full bg-brand-night px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand">
               {t("wholesaleBadge")}
             </span>
-            <h2 className="mt-4 text-2xl font-bold text-white">
+            <h2 className="mt-4 text-3xl font-extrabold uppercase tracking-tight text-white">
               {t("wholesaleTitle")}
             </h2>
             <p className="mt-4 text-slate-300">{t("wholesaleDescription")}</p>
@@ -57,7 +57,7 @@ export async function WholesaleSection({
               <Button
                 size="lg"
                 asChild
-                className="bg-white text-slate-900 hover:bg-slate-200"
+                className="press bg-brand font-bold uppercase tracking-wide text-brand-foreground hover:bg-brand-strong"
               >
                 <Link href={`${basePath}/wholesale`}>
                   {t("wholesaleCtaPrimary")}

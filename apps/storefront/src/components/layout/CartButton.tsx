@@ -1,8 +1,9 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { headerIconButtonClass } from "@/components/layout/header-styles";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 
@@ -21,11 +22,11 @@ export function CartButton() {
       size="icon-lg"
       onClick={openCart}
       aria-label={t("openCart")}
-      className="relative"
+      className={`relative ${headerIconButtonClass}`}
     >
-      <ShoppingBag className="size-5" />
+      <ShoppingCart className="size-5" />
       {mounted && itemCount > 0 && (
-        <span className="absolute top-0 right-0 bg-primary text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+        <span className="absolute top-0.5 right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-brand-foreground ring-2 ring-brand-ink">
           {itemCount}
         </span>
       )}
