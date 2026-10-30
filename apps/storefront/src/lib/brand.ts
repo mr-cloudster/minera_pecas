@@ -29,26 +29,6 @@ export const MACHINE_BRANDS = [
   "Volvo",
 ] as const;
 
-/**
- * Part families for "shop by part" navigation while the catalog has no
- * categories. Each one opens the on-site search with a Portuguese query (the
- * catalog language). Labels live in messages under `header.partTypes.<key>`.
- * The header switches to the Spree root categories automatically once they
- * exist.
- */
-export const PART_TYPES = [
-  { key: "filters", query: "filtro" },
-  { key: "bearings", query: "rolamento" },
-  { key: "seals", query: "retentor" },
-  { key: "hydraulics", query: "hidráulica" },
-  { key: "engine", query: "motor" },
-  { key: "transmission", query: "transmissão" },
-  { key: "undercarriage", query: "rodante" },
-  { key: "electrical", query: "elétrica" },
-] as const;
-
-export type PartTypeKey = (typeof PART_TYPES)[number]["key"];
-
 export function partSearchHref(basePath: string, query: string): string {
   return `${basePath}/products?q=${encodeURIComponent(query)}`;
 }

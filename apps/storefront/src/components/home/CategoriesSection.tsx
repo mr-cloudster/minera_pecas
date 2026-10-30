@@ -1,40 +1,27 @@
-import {
-  ArrowUpRight,
-  CircleDot,
-  Cog,
-  Disc3,
-  Droplets,
-  Filter,
-  Link2,
-  type LucideIcon,
-  Settings2,
-  Zap,
-} from "lucide-react";
+import type { Category } from "@spree/sdk";
+import { ArrowUpRight, Boxes } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { PART_TYPES, type PartTypeKey, partSearchHref } from "@/lib/brand";
-
-const PART_ICONS: Record<PartTypeKey, LucideIcon> = {
-  filters: Filter,
-  bearings: Disc3,
-  seals: CircleDot,
-  hydraulics: Droplets,
-  engine: Cog,
-  transmission: Settings2,
-  undercarriage: Link2,
-  electrical: Zap,
-};
 
 interface CategoriesSectionProps {
   basePath: string;
   locale: string;
+  /** Spree root categories, managed in the admin panel. */
+  categories: Category[];
 }
 
-/** "Shop by part" grid. Every tile opens the on-site catalog search. */
+/**
+ * "Shop by part" grid built from the Spree root categories. Renders nothing
+ * until categories exist in the admin panel.
+ */
 export async function CategoriesSection({
   basePath,
   locale,
+  categories,
 }: CategoriesSectionProps) {
+  if (categories.length === 0) return null;
+
   const t = await getTranslations({
     locale: locale as Locale,
     namespace: "home",
@@ -67,20 +54,32 @@ export async function CategoriesSection({
         </div>
 
         <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {PART_TYPES.map((part) => {
-            const Icon = PART_ICONS[part.key];
+          {categories.map((category) => {
+            const image = category.square_image_url ?? category.image_url;
             return (
-              <li key={part.key}>
+              <li key={category.id}>
                 <Link
-                  href={partSearchHref(basePath, part.query)}
+                  href={`${basePath}/c/${category.permalink}`}
                   className="press group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-md border border-neutral-200 bg-neutral-50 p-5 hover:border-brand-ink hover:bg-white hover:shadow-[0_18px_40px_-20px_rgb(0_0_0/0.35)] md:p-6"
                 >
-                  <span className="flex size-12 items-center justify-center rounded-md bg-brand-ink text-brand transition-colors duration-200 group-hover:bg-brand group-hover:text-brand-foreground">
-                    <Icon className="size-6" aria-hidden />
-                  </span>
+                  {image ? (
+                    <span className="relative block aspect-square w-full overflow-hidden rounded-md bg-white">
+                      <Image
+                        src={image}
+                        alt=""
+                        fill
+                        sizes="(min-width: 768px) 25vw, 50vw"
+                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+                      />
+                    </span>
+                  ) : (
+                    <span className="flex size-12 items-center justify-center rounded-md bg-brand-ink text-brand transition-colors duration-200 group-hover:bg-brand group-hover:text-brand-foreground">
+                      <Boxes className="size-6" aria-hidden />
+                    </span>
+                  )}
                   <span className="flex items-end justify-between gap-2">
                     <span className="font-display text-sm font-bold uppercase leading-tight tracking-wide text-brand-ink md:text-base">
-                      {th(`partTypes.${part.key}`)}
+                      {category.name}
                     </span>
                     <ArrowUpRight
                       className="size-5 shrink-0 text-neutral-400 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-ink motion-reduce:transition-none"

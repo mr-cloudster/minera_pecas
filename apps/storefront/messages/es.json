@@ -43,17 +43,7 @@
     "myAccount": "Mi cuenta",
     "wholesale": "Mayorista",
     "allParts": "Todos los repuestos",
-    "shopByPart": "Comprar por repuesto",
-    "partTypes": {
-      "filters": "Filtros",
-      "bearings": "Rodamientos",
-      "seals": "Sellos y retenes",
-      "hydraulics": "Hidráulica",
-      "engine": "Motor",
-      "transmission": "Transmisión",
-      "undercarriage": "Tren de rodaje",
-      "electrical": "Eléctrica"
-    }
+    "shopByPart": "Comprar por repuesto"
   },
   "regionPreferences": {
     "title": "Región e idioma",

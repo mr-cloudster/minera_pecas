@@ -1,14 +1,16 @@
+import type { Category } from "@spree/sdk";
 import { ArrowRight, ShieldCheck, Truck, Wrench } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { MONOGRAM_LEFT, MONOGRAM_RIGHT } from "@/components/layout/Logo";
 import { SearchBar } from "@/components/search/SearchBar";
 import { Button } from "@/components/ui/button";
-import { PART_TYPES, partSearchHref } from "@/lib/brand";
 
 interface HeroSectionProps {
   basePath: string;
   locale: string;
+  /** Spree root categories; the first few become quick links under search. */
+  categories: Category[];
 }
 
 /** Amber crop marks in the corners of the monogram panel. */
@@ -61,7 +63,11 @@ function MonogramPanel({ tagline }: { tagline: string }) {
   );
 }
 
-export async function HeroSection({ basePath, locale }: HeroSectionProps) {
+export async function HeroSection({
+  basePath,
+  locale,
+  categories,
+}: HeroSectionProps) {
   const t = await getTranslations({
     locale: locale as Locale,
     namespace: "home",
@@ -69,10 +75,6 @@ export async function HeroSection({ basePath, locale }: HeroSectionProps) {
   const tp = await getTranslations({
     locale: locale as Locale,
     namespace: "products",
-  });
-  const th = await getTranslations({
-    locale: locale as Locale,
-    namespace: "header",
   });
   const tf = await getTranslations({
     locale: locale as Locale,
@@ -126,18 +128,20 @@ export async function HeroSection({ basePath, locale }: HeroSectionProps) {
                 tone="hero"
                 placeholder={tp("searchPlaceholder")}
               />
-              <ul className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-                {PART_TYPES.slice(0, 4).map((part) => (
-                  <li key={part.key}>
-                    <Link
-                      href={partSearchHref(basePath, part.query)}
-                      className="press inline-flex rounded-full border border-white/15 px-3 py-1 font-medium text-neutral-300 hover:border-brand hover:text-brand focus-visible:outline-brand"
-                    >
-                      {th(`partTypes.${part.key}`)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {categories.length > 0 && (
+                <ul className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  {categories.slice(0, 4).map((category) => (
+                    <li key={category.id}>
+                      <Link
+                        href={`${basePath}/c/${category.permalink}`}
+                        className="press inline-flex rounded-full border border-white/15 px-3 py-1 font-medium text-neutral-300 hover:border-brand hover:text-brand focus-visible:outline-brand"
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="rise rise-3 mt-8 flex flex-col gap-3 sm:flex-row">

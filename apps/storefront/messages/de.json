@@ -43,17 +43,7 @@
     "myAccount": "Mein Konto",
     "wholesale": "Großhandel",
     "allParts": "Alle Teile",
-    "shopByPart": "Nach Teil einkaufen",
-    "partTypes": {
-      "filters": "Filter",
-      "bearings": "Lager",
-      "seals": "Dichtungen",
-      "hydraulics": "Hydraulik",
-      "engine": "Motor",
-      "transmission": "Getriebe",
-      "undercarriage": "Fahrwerk",
-      "electrical": "Elektrik"
-    }
+    "shopByPart": "Nach Teil einkaufen"
   },
   "regionPreferences": {
     "title": "Region und Sprache",

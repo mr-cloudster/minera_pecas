@@ -43,17 +43,7 @@
     "myAccount": "My Account",
     "wholesale": "Wholesale",
     "allParts": "All parts",
-    "shopByPart": "Shop by part",
-    "partTypes": {
-      "filters": "Filters",
-      "bearings": "Bearings",
-      "seals": "Seals & oil seals",
-      "hydraulics": "Hydraulics",
-      "engine": "Engine",
-      "transmission": "Transmission",
-      "undercarriage": "Undercarriage",
-      "electrical": "Electrical"
-    }
+    "shopByPart": "Shop by part"
   },
   "regionPreferences": {
     "title": "Region and language",

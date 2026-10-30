@@ -16,7 +16,6 @@ import {
   SheetFooter,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { PART_TYPES, partSearchHref } from "@/lib/brand";
 
 type PanelType = { kind: "main" } | { kind: "category"; category: Category };
 
@@ -239,26 +238,6 @@ export function MobileMenu({
                     {category.name}
                   </Link>
                 ),
-              )}
-              {/* Part families until the catalog has categories */}
-              {rootCategories.length === 0 && (
-                <div className="mt-2 border-t border-white/10 pt-3">
-                  <p className="px-3 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-brand">
-                    {t("shopByPart")}
-                  </p>
-                  <div className="grid grid-cols-2 gap-1">
-                    {PART_TYPES.map((part) => (
-                      <Link
-                        key={part.key}
-                        href={partSearchHref(basePath, part.query)}
-                        onClick={() => setOpen(false)}
-                        className={linkClass}
-                      >
-                        {t(`partTypes.${part.key}`)}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
               )}
               {/* Secondary links — kept out of the category list above. */}
               <div className="mt-2 pt-2 border-t border-white/10">

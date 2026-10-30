@@ -43,17 +43,7 @@
     "myAccount": "Minha conta",
     "wholesale": "Atacado",
     "allParts": "Todas as peças",
-    "shopByPart": "Comprar por peça",
-    "partTypes": {
-      "filters": "Filtros",
-      "bearings": "Rolamentos",
-      "seals": "Vedações e retentores",
-      "hydraulics": "Hidráulica",
-      "engine": "Motor",
-      "transmission": "Transmissão",
-      "undercarriage": "Material rodante",
-      "electrical": "Elétrica"
-    }
+    "shopByPart": "Comprar por peça"
   },
   "regionPreferences": {
     "title": "Região e idioma",

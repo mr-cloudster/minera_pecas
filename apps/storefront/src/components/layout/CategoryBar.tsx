@@ -2,12 +2,11 @@ import type { Category } from "@spree/sdk";
 import { LayoutGrid } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { PART_TYPES, partSearchHref } from "@/lib/brand";
 
 interface CategoryBarProps {
   basePath: string;
   locale: Locale;
-  /** Spree root categories; falls back to part-type searches when empty. */
+  /** Spree root categories, managed in the admin panel. */
   categories?: Category[];
 }
 
@@ -25,18 +24,11 @@ export async function CategoryBar({
 }: CategoryBarProps) {
   const t = await getTranslations({ locale, namespace: "header" });
 
-  const items =
-    categories.length > 0
-      ? categories.map((category) => ({
-          key: category.id,
-          label: category.name,
-          href: `${basePath}/c/${category.permalink}`,
-        }))
-      : PART_TYPES.map((part) => ({
-          key: part.key,
-          label: t(`partTypes.${part.key}`),
-          href: partSearchHref(basePath, part.query),
-        }));
+  const items = categories.map((category) => ({
+    key: category.id,
+    label: category.name,
+    href: `${basePath}/c/${category.permalink}`,
+  }));
 
   return (
     <nav

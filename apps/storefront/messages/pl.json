@@ -43,17 +43,7 @@
     "myAccount": "Moje konto",
     "wholesale": "Hurt",
     "allParts": "Wszystkie części",
-    "shopByPart": "Kupuj według części",
-    "partTypes": {
-      "filters": "Filtry",
-      "bearings": "Łożyska",
-      "seals": "Uszczelnienia",
-      "hydraulics": "Hydraulika",
-      "engine": "Silnik",
-      "transmission": "Skrzynia biegów",
-      "undercarriage": "Podwozie",
-      "electrical": "Elektryka"
-    }
+    "shopByPart": "Kupuj według części"
   },
   "regionPreferences": {
     "title": "Region i język",
